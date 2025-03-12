@@ -7,7 +7,13 @@
           <div class="row mb-3">
             <div class="col-6">
               <label for="username" class="form-label">Username</label>
-              <input type="text" class="form-control" id="username" v-model="formData.username" />
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                required
+                v-model="formData.username"
+              />
             </div>
             <div class="col-6">
               <label for="password" class="form-label">Password</label>
@@ -15,7 +21,10 @@
                 type="password"
                 class="form-control"
                 id="password"
+                minlength="4"
+                maxlength="10"
                 v-model="formData.password"
+                required
               />
             </div>
           </div>
@@ -28,15 +37,17 @@
                   class="form-check-input"
                   id="isAustralian"
                   v-model="formData.isAustralian"
+                  required
                 />
               </div>
             </div>
             <div class="col-6">
               <label for="gender" class="form-label">Gender</label>
-              <select class="form-select" id="gender" v-model="formData.gender">
+              <select class="form-select" id="gender" v-model="formData.gender" required>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>
+
               </select>
             </div>
           </div>
@@ -45,8 +56,11 @@
             <textarea
               class="form-control"
               id="reason"
+              minlength="28"
+              maxlength="250"
               rows="3"
               v-model="formData.reason"
+              required
             ></textarea>
           </div>
           <div class="text-center">
