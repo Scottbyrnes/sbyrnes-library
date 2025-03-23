@@ -72,7 +72,20 @@
       </div>
     </div>
   </div>
-  <div class="row mt-5" v-if="submittedCards.length">
+  <DataTable
+  v-if="submittedCards.length"
+  :value="submittedCards"
+  class="mt-5"
+  tableStyle="min-width: 100%"
+  >
+
+<Column field="username" header="Username" />
+<Column field="password" header="Password" />
+<Column field="isAustralian" header="Australian Resident?" />
+<Column field="gender" header="Gender" />
+<Column field="reason" header="Reason" />
+</DataTable>
+<!--<div class="row mt-5" v-if="submittedCards.length">
     <div class="d-flex flex-wrap justify-content-start">
       <div
         v-for="(card, index) in submittedCards"
@@ -92,7 +105,7 @@
         </ul>
       </div>
     </div>
-  </div>
+  </div>-->
 </template>
 
 <script setup>
@@ -115,6 +128,10 @@ const submitForm = () => {
   validateIsAustralian();
   validateGender();
   validateReason();
+
+  console.log('Errors:', errors.value);
+  console.log('Form Data:', formData.value);
+
   if (!errors.value.username && !errors.value.password && !errors.value.resident && !errors.value.gender && !errors.value.reason) {
     submittedCards.value.push({ ...formData.value })
     clearForm()
@@ -213,5 +230,6 @@ const validateReason = () => {
 }
 .list-group-item {
   padding: 10px;
+
 }
 </style>
