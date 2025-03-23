@@ -4,5 +4,10 @@
     "dbaeumer.vscode-eslint",
     "EditorConfig.EditorConfig",
     "esbenp.prettier-vscode"
-  ]
+  ] 
+}
+{
+  "github.copilot.enable": {
+    "*": false
+  }
 }
