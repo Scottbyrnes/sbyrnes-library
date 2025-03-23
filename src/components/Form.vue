@@ -17,17 +17,17 @@
                 v-model="formData.username" />
                 <div v-if="errors.username" class="text-danger">{{ errors.username }}</div>
             </div>
+
             <div class="col-6">
               <label for="password" class="form-label">Password</label>
               <input
                 type="password"
                 class="form-control"
                 id="password"
-                minlength="4"
-                maxlength="10"
-                v-model="formData.password"
-
-              />
+                @blur="() => validatePasword(true)"
+                @input="() => validatePasword(false)"
+                v-model="formData.password" />
+              <div v-if="errors.password" class="text-danger">{{ errors.password }}</div>
             </div>
           </div>
           <div class="row mb-3">
@@ -111,10 +111,14 @@ const formData = ref({
 const submittedCards = ref([])
 
 const submitForm = () => {
-  submittedCards.value.push({
-    ...formData.value,
-  })
+  validateName(true);
+  validatePasword(true);
+  if (!errors.value.username && !errors.value.password) {
+    submittedCards.value.push({ ...formData.value })
+    clearForm()
+  }
 }
+
 const clearForm = () => {
   formData.value = {
     username: '',
@@ -138,6 +142,29 @@ const validateName = (blur) => {
     errors.value.username = 'Username must be at least 3 characters long'
   } else {
     errors.value.username = null
+  }
+}
+
+const validatePasword = (blur) => {
+  const password= formData.value.password;
+  const minLength = 8;
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasNumbers = /\d/.test(password);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+  if (password.length < minLength) {
+    if (blur) errors.value.password = `Password must be at least ${minLength} characters long`;
+  } else if (!hasUpperCase) {
+    if (blur) errors.value.password = 'Password must have at least one uppercase character';
+  } else if (!hasLowerCase) {
+    if (blur) errors.value.password = 'Password must have at least one lowercase character';
+  } else if (!hasNumbers) {
+    if (blur) errors.value.password = 'Password must have at least one number';
+  } else if (!hasSpecialChar) {
+    if (blur) errors.value.password = 'Password must have at least one special character';
+  } else {
+    errors.value.password = null;
   }
 }
 </script>
