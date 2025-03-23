@@ -38,9 +38,8 @@
                   type="checkbox"
                   class="form-check-input"
                   id="isAustralian"
-                  v-model="formData.isAustralian"
-
-                />
+                  v-model="formData.isAustralian"/>
+                <div v-if="errors.resident" class="text-danger">{{ errors.resident }}</div>
               </div>
             </div>
             <div class="col-6">
@@ -51,6 +50,7 @@
                 <option value="other">Other</option>
 
               </select>
+              <div v-if="errors.gender" class="text-danger">{{ errors.gender }} </div>
             </div>
           </div>
           <div class="mb-3">
@@ -58,12 +58,11 @@
             <textarea
               class="form-control"
               id="reason"
-              minlength="28"
-              maxlength="250"
               rows="3"
               v-model="formData.reason"
 
             ></textarea>
+            <div v-if="errors.reason" class="text-danger">{{ errors.reason }}</div>
           </div>
           <div class="text-center">
             <button type="submit" class="btn btn-primary me-2">Submit</button>
@@ -113,7 +112,10 @@ const submittedCards = ref([])
 const submitForm = () => {
   validateName(true);
   validatePasword(true);
-  if (!errors.value.username && !errors.value.password) {
+  validateIsAustralian();
+  validateGender();
+  validateReason();
+  if (!errors.value.username && !errors.value.password && !errors.value.resident && !errors.value.gender && !errors.value.reason) {
     submittedCards.value.push({ ...formData.value })
     clearForm()
   }
@@ -167,6 +169,33 @@ const validatePasword = (blur) => {
     errors.value.password = null;
   }
 }
+
+const validateIsAustralian = () => {
+  if (!formData.value.isAustralian) {
+    errors.value.resident = 'You must be an Australian resident to join';
+  } else {
+    errors.value.resident = null;
+  }
+}
+
+const validateGender = () => {
+  if (!formData.value.gender) {
+    errors.value.gender = 'Please Select an option from the drop down';
+  } else {
+    errors.value.gender = null;
+  }
+}
+
+const validateReason = () => {
+  if (formData.value.reason.length < 10) {
+    errors.value.reason = 'Reason must be at least 10 characters long';
+  } else if (formData.value.reason.length > 100) {
+    errors.value.reason = 'Reason must be less than 100 characters long';
+  } else {
+    errors.value.reason = null;
+  }
+}
+
 </script>
 
 <style scoped>
